@@ -28,6 +28,10 @@ public class InspectionUI : MonoBehaviour
     GameObject detailPanel;
     Text detailText;
 
+    Button refreshButton;
+    Text refreshButtonLabel;
+    bool isRefreshing;
+
     string priority = LOW;
     IssueReporter reporter;
 
@@ -75,6 +79,7 @@ public class InspectionUI : MonoBehaviour
         canvasGO.AddComponent<GraphicRaycaster>();
 
         BuildHint(canvasGO.transform);
+        BuildRefreshButton(canvasGO.transform);
         BuildForm(canvasGO.transform);
         BuildDetailPanel(canvasGO.transform);
         BuildPopup(canvasGO.transform);   // 最后创建，保证弹窗显示在最上层
@@ -98,6 +103,62 @@ public class InspectionUI : MonoBehaviour
         var shadow = hint.gameObject.AddComponent<Shadow>();
         shadow.effectColor = new Color(0f, 0f, 0f, 0.7f);
         shadow.effectDistance = new Vector2(1f, -1f);
+    }
+
+    // ---------- 刷新标记按钮 ----------
+
+    void BuildRefreshButton(Transform parent)
+    {
+        var go = new GameObject("RefreshButton");
+        go.transform.SetParent(parent, false);
+
+        var img = go.AddComponent<Image>();
+        img.color = new Color(0.16f, 0.45f, 0.8f, 1f);
+
+        refreshButton = go.AddComponent<Button>();
+        refreshButton.targetGraphic = img;
+        refreshButton.onClick.AddListener(RefreshMarkers);
+
+        RectTransform rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(0f, 1f);
+        rt.anchorMax = new Vector2(0f, 1f);
+        rt.pivot = new Vector2(0f, 1f);
+        rt.anchoredPosition = new Vector2(24f, -72f);
+        rt.sizeDelta = new Vector2(150f, 40f);
+
+        refreshButtonLabel = CreateText(go.transform, "Label", 22, TextAnchor.MiddleCenter, Color.white);
+        Stretch(refreshButtonLabel.rectTransform, 0f, 0f, 0f, 0f);
+        refreshButtonLabel.text = "刷新标记";
+        refreshButtonLabel.raycastTarget = false;
+    }
+
+    /// <summary>清除场景全部历史标记并从后端重新拉取重建；刷新期间禁用按钮避免重复触发。</summary>
+    void RefreshMarkers()
+    {
+        if (isRefreshing)
+        {
+            return;
+        }
+        if (IssueMarkerManager.Instance == null)
+        {
+            ShowPopup("场景缺少 IssueMarkerManager 组件，无法刷新");
+            return;
+        }
+
+        isRefreshing = true;
+        refreshButton.interactable = false;
+        refreshButtonLabel.text = "刷新中…";
+
+        IssueMarkerManager.Instance.Refresh((success) =>
+        {
+            isRefreshing = false;
+            refreshButton.interactable = true;
+            refreshButtonLabel.text = "刷新标记";
+            if (!success)
+            {
+                ShowPopup("刷新失败：无法连接后端服务，请确认 Go 服务已启动");
+            }
+        });
     }
 
     // ---------- 上报表单 ----------

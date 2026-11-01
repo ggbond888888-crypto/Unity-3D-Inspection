@@ -71,12 +71,13 @@ public class IssueMarkerManager : MonoBehaviour
     }
 
     /// <summary>重新从后端加载全部历史问题（上报成功或需要刷新时调用）。
-    /// 先清除场景内已有历史标记，再重新 GET 恢复，保证新增问题立即可见。</summary>
-    public void Refresh()
+    /// 先清除场景内已有历史标记，再重新 GET 恢复，保证新增问题立即可见。
+    /// onDone(是否成功)：加载完成后回调，供 UI 解除刷新中的禁用状态。</summary>
+    public void Refresh(Action<bool> onDone = null)
     {
         StopAllCoroutines();
         ClearAllMarkers();
-        StartCoroutine(LoadIssues());
+        StartCoroutine(LoadIssues(onDone));
     }
 
     void ClearAllMarkers()
@@ -87,7 +88,7 @@ public class IssueMarkerManager : MonoBehaviour
         }
     }
 
-    IEnumerator LoadIssues()
+    IEnumerator LoadIssues(Action<bool> onDone = null)
     {
         string url = backendUrl.TrimEnd('/') + "/issues";
         using (var request = UnityWebRequest.Get(url))
@@ -98,6 +99,7 @@ public class IssueMarkerManager : MonoBehaviour
             if (request.result != UnityWebRequest.Result.Success)
             {
                 Debug.LogWarning("[IssueMarkerManager] 历史问题加载失败：" + request.error);
+                onDone?.Invoke(false);
                 yield break;
             }
 
@@ -108,6 +110,7 @@ public class IssueMarkerManager : MonoBehaviour
                 SpawnMarker(issue);
             }
             Debug.Log($"[IssueMarkerManager] 已恢复 {issues.Length} 个历史问题标记");
+            onDone?.Invoke(true);
         }
     }
 
