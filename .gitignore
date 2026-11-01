@@ -1,0 +1,45 @@
+# ============ Unity ============
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]serSettings/
+MemoryCaptures/
+[Ee]xportLogs/
+[Uu]ser/
+SysInfo.txt
+crashlytics-build.properties
+
+# Unity 生成的本地文件
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+*.opendb
+*.VC.db
+
+# ============ React / Node ============
+React/node_modules/
+React/dist/
+React/build/
+React/.env.local
+React/.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============ Go ============
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.log
+
+# ============ 编辑器 / 系统 ============
+.idea/
+.vscode/
+.vs/
+.DS_Store
+Thumbs.db

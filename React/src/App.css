@@ -1,0 +1,160 @@
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.count {
+  color: #667085;
+  font-size: 14px;
+}
+
+.tip {
+  color: #667085;
+  padding: 24px 0;
+}
+
+.error-box {
+  background: #fff5f5;
+  border: 1px solid #fda29b;
+  border-radius: 8px;
+  padding: 20px 24px;
+  color: #912018;
+}
+
+.error-detail {
+  margin: 8px 0 16px;
+  font-size: 14px;
+  color: #b42318;
+  word-break: break-all;
+}
+
+.error-box button {
+  font: inherit;
+  padding: 8px 20px;
+  border: 1px solid #d92d20;
+  border-radius: 6px;
+  background: #d92d20;
+  color: #fff;
+  cursor: pointer;
+}
+
+.error-box button:hover {
+  background: #b42318;
+}
+
+.issue-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.08);
+}
+
+.issue-table th,
+.issue-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eaecf0;
+  vertical-align: middle;
+}
+
+.issue-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #475467;
+  font-size: 14px;
+}
+
+.issue-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.time {
+  color: #667085;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.desc {
+  max-width: 260px;
+  color: #475467;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.priority-high {
+  background: #fee4e2;
+  color: #b42318;
+}
+
+.priority-medium {
+  background: #fef0c7;
+  color: #b54708;
+}
+
+.priority-low {
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+.status-open {
+  background: #eff8ff;
+  color: #175cd3;
+}
+
+.status-in_progress {
+  background: #fef0c7;
+  color: #b54708;
+}
+
+.status-resolved {
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+.action-error {
+  margin-bottom: 16px;
+  padding: 10px 16px;
+  border: 1px solid #fda29b;
+  border-radius: 6px;
+  background: #fff5f5;
+  color: #b42318;
+  font-size: 14px;
+}
+
+.status-select {
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.status-select:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.saving {
+  margin-left: 8px;
+  font-size: 13px;
+  color: #667085;
+}

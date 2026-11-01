@@ -1,0 +1,20 @@
+:root {
+  font: 15px/1.6 system-ui, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+  color: #1f2933;
+  background: #f5f6f8;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: 26px;
+  color: #101828;
+}
