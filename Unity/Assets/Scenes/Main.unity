@@ -1131,7 +1131,7 @@ Transform:
   m_GameObject: {fileID: 800000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 1, z: 2}
+  m_LocalPosition: {x: -6, y: 1, z: 2}
   m_LocalScale: {x: 1.2, y: 2, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1228,7 +1228,7 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier:
   deviceId: CAB-02
-  area: A区-机柜区
+  area: B区-机柜区
 --- !u!1 &900000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1258,7 @@ Transform:
   m_GameObject: {fileID: 900000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 1, z: -2}
+  m_LocalPosition: {x: 0, y: 1, z: -2}
   m_LocalScale: {x: 1.2, y: 2, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3053,6 +3053,7 @@ GameObject:
   - component: {fileID: 491554435}
   - component: {fileID: 491554434}
   - component: {fileID: 491554433}
+  - component: {fileID: 300000001}
   m_Layer: 0
   m_Name: Column_Decor
   m_TagString: Untagged
@@ -3639,6 +3640,7 @@ GameObject:
   - component: {fileID: 630155844}
   - component: {fileID: 630155843}
   - component: {fileID: 630155842}
+  - component: {fileID: 300000002}
   m_Layer: 0
   m_Name: Column_Decor
   m_TagString: Untagged
@@ -4099,6 +4101,7 @@ GameObject:
   - component: {fileID: 817693632}
   - component: {fileID: 817693631}
   - component: {fileID: 817693630}
+  - component: {fileID: 300000003}
   m_Layer: 0
   m_Name: Column_Decor
   m_TagString: Untagged
@@ -6935,6 +6938,7 @@ GameObject:
   - component: {fileID: 1879621392}
   - component: {fileID: 1879621391}
   - component: {fileID: 1879621390}
+  - component: {fileID: 300000004}
   m_Layer: 0
   m_Name: Column_Decor
   m_TagString: Untagged
@@ -7352,3 +7356,59 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   deviceId: PIPE-01
   area: B区-管道区
+--- !u!114 &300000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491554432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd05dd05dd05dd05dd05dd05dd05dd05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  deviceId: PIPE-02
+  area: A区-管道区
+--- !u!114 &300000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630155841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd05dd05dd05dd05dd05dd05dd05dd05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  deviceId: PIPE-03
+  area: B区-管道区
+--- !u!114 &300000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817693629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd05dd05dd05dd05dd05dd05dd05dd05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  deviceId: PIPE-04
+  area: B区-管道区
+--- !u!114 &300000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879621389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd05dd05dd05dd05dd05dd05dd05dd05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  deviceId: PIPE-05
+  area: A区-管道区

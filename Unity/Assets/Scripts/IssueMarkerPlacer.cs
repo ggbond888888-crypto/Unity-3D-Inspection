@@ -89,19 +89,46 @@ public class IssueMarkerPlacer : MonoBehaviour
         }
 
         // 命中带 DeviceInfo 的设备时，上报自动携带设备编号与设备绑定区域；
-        // 否则按命中点 / 命中面法线归属空间区域（地面分区 / 墙面区）
+        // 场景以 x=0 为界分 A区（左）/ B区（右），墙面按命中点 x 归属到对应区
         var device = hit.collider.GetComponentInParent<DeviceInfo>();
         string area = ResolveArea(device, hit);
         PlaceMarker(hit.point, device, area);
     }
 
+    /// <summary>
+    /// 区域归属判定（x=0 为界，左 A区 / 右 B区）：
+    /// 1. 命中设备且绑定了区域 → 直接使用设备区域（如 A区-机柜区）
+    /// 2. 命中设备但未绑定区域 → 按命中点 x 分区（A区 / B区）
+    /// 3. 命中墙面（物体名以 Wall 开头）→ A区-墙面 / B区-墙面
+    /// 4. 其他表面（地面等）→ 按命中点 x 分区（A区 / B区）
+    /// </summary>
     static string ResolveArea(DeviceInfo device, RaycastHit hit)
     {
-        if (device != null && !string.IsNullOrEmpty(device.area))
+        if (device != null)
         {
-            return device.area;
+            if (!string.IsNullOrEmpty(device.area))
+            {
+                return device.area;
+            }
+            return AreaResolver.FromPoint(hit.point);
         }
-        return AreaResolver.FromHit(hit.point, hit.normal);
+
+        if (IsWallObject(hit.collider))
+        {
+            return AreaResolver.FromHit(hit.point, hit.normal);
+        }
+
+        return AreaResolver.FromPoint(hit.point);
+    }
+
+    /// <summary>判断命中物体是否为墙面（按物体名前缀识别）。</summary>
+    static bool IsWallObject(Collider collider)
+    {
+        if (collider == null)
+        {
+            return false;
+        }
+        return collider.gameObject.name.StartsWith("Wall");
     }
 
     void PlaceMarker(Vector3 position, DeviceInfo device, string area)
