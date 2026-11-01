@@ -84,6 +84,26 @@
   white-space: nowrap;
 }
 
+.delete-btn {
+  padding: 4px 12px;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  background: #fff;
+  color: #dc2626;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background: #fef2f2;
+  border-color: #dc2626;
+}
+
+.delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .desc {
   max-width: 260px;
   color: #475467;
@@ -157,4 +177,140 @@
   margin-left: 8px;
   font-size: 13px;
   color: #667085;
+}
+
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.filters label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #475467;
+}
+
+.filters select {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.issue-row {
+  cursor: pointer;
+}
+
+.issue-row:hover {
+  background: #f2f4f7;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  font-size: 14px;
+  color: #475467;
+}
+
+.pagination button {
+  font: inherit;
+  padding: 6px 16px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #f9fafb;
+}
+
+.pagination button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.page-info {
+  color: #667085;
+}
+
+.page-jump {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-jump input {
+  width: 56px;
+  font: inherit;
+  padding: 5px 8px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+}
+
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.detail-panel {
+  width: 520px;
+  max-width: 92vw;
+  max-height: 86vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px 32px;
+  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.25);
+}
+
+.detail-panel h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 10px 16px;
+  margin: 0 0 22px;
+  font-size: 14px;
+}
+
+.detail-grid dt {
+  color: #667085;
+}
+
+.detail-grid dd {
+  margin: 0;
+  color: #101828;
+  word-break: break-word;
+}
+
+.detail-close {
+  font: inherit;
+  padding: 8px 28px;
+  border: none;
+  border-radius: 6px;
+  background: #1570ef;
+  color: #fff;
+  cursor: pointer;
+  float: right;
+}
+
+.detail-close:hover {
+  background: #175cd3;
 }

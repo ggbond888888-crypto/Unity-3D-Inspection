@@ -8,6 +8,7 @@ type Position struct {
 }
 
 // Issue 是巡检问题，字段与 Unity / React 约定一致。
+// DeviceId / Area 可选：只有命中绑定 DeviceInfo 的设备时才会上报，命中普通场景表面为空。
 type Issue struct {
 	ID          string   `json:"id"`
 	Title       string   `json:"title"`
@@ -15,6 +16,8 @@ type Issue struct {
 	Priority    string   `json:"priority"`
 	Status      string   `json:"status"`
 	Position    Position `json:"position"`
+	DeviceId    string   `json:"deviceId"`
+	Area        string   `json:"area"`
 	CreatedAt   string   `json:"createdAt"`
 	UpdatedAt   string   `json:"updatedAt"`
 }

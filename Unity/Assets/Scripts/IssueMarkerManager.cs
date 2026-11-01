@@ -35,6 +35,8 @@ public class IssueMarkerManager : MonoBehaviour
         public string priority;
         public string status;
         public PositionData position;
+        public string deviceId;
+        public string area;
         public string createdAt;
         public string updatedAt;
     }
@@ -211,7 +213,48 @@ public class IssueMarkerManager : MonoBehaviour
             ? new Vector3(issue.position.x, issue.position.y, issue.position.z)
             : Vector3.zero;
 
-        ui.ShowIssueDetail(issue.title, issue.description, issue.priority, issue.status, position);
+        ui.ShowIssueDetail(issue.title, issue.description, issue.priority, issue.status, position, issue.deviceId, issue.area, issue.id);
+    }
+
+    /// <summary>删除后端问题；成功后同步移除场景中的历史标记。done(是否成功, id, 提示)。</summary>
+    public void DeleteIssue(string id, Action<bool, string, string> done)
+    {
+        StartCoroutine(DeleteIssueRoutine(id, done));
+    }
+
+    IEnumerator DeleteIssueRoutine(string id, Action<bool, string, string> done)
+    {
+        string url = backendUrl.TrimEnd('/') + "/issues/" + UnityWebRequest.EscapeURL(id);
+        using (var request = UnityWebRequest.Delete(url))
+        {
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.timeout = 10;
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success || request.responseCode == 204)
+            {
+                RemoveMarker(id);
+                done?.Invoke(true, id, "问题已删除");
+                yield break;
+            }
+
+            string message = request.result == UnityWebRequest.Result.ConnectionError
+                ? $"无法连接后端服务（{url}），请确认 Go 服务已启动"
+                : $"删除失败（HTTP {request.responseCode}）";
+            done?.Invoke(false, id, message);
+        }
+    }
+
+    /// <summary>按问题 ID 移除场景中的历史标记。</summary>
+    void RemoveMarker(string id)
+    {
+        foreach (var view in FindObjectsByType<IssueMarkerView>(FindObjectsSortMode.None))
+        {
+            if (view.issue != null && view.issue.id == id)
+            {
+                Destroy(view.gameObject);
+            }
+        }
     }
 }
 

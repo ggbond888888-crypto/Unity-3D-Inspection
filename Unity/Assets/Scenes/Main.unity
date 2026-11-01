@@ -1088,6 +1088,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &800005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd05dd05dd05dd05dd05dd05dd05dd05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  deviceId: CAB-01
+  area: A区-机柜区
 --- !u!1 &800000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1114,7 @@ GameObject:
   - component: {fileID: 800002}
   - component: {fileID: 800003}
   - component: {fileID: 800004}
+  - component: {fileID: 800005}
   m_Layer: 0
   m_Name: Cabinet_A
   m_TagString: Untagged
@@ -1200,6 +1215,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &900005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd05dd05dd05dd05dd05dd05dd05dd05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  deviceId: CAB-02
+  area: A区-机柜区
 --- !u!1 &900000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1212,6 +1241,7 @@ GameObject:
   - component: {fileID: 900002}
   - component: {fileID: 900003}
   - component: {fileID: 900004}
+  - component: {fileID: 900005}
   m_Layer: 0
   m_Name: Cabinet_B
   m_TagString: Untagged
@@ -1324,6 +1354,7 @@ GameObject:
   - component: {fileID: 1000002}
   - component: {fileID: 1000003}
   - component: {fileID: 1000004}
+  - component: {fileID: 1000010}
   m_Layer: 0
   m_Name: Pipe_North
   m_TagString: Untagged
@@ -7307,3 +7338,17 @@ SceneRoots:
   - {fileID: 1879621393}
   - {fileID: 561268949}
   - {fileID: 1117907019}
+--- !u!114 &1000010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd05dd05dd05dd05dd05dd05dd05dd05, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  deviceId: PIPE-01
+  area: B区-管道区

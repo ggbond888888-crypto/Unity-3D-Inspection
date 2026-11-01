@@ -88,10 +88,23 @@ public class IssueMarkerPlacer : MonoBehaviour
             return;
         }
 
-        PlaceMarker(hit.point);
+        // 命中带 DeviceInfo 的设备时，上报自动携带设备编号与设备绑定区域；
+        // 否则按命中点 / 命中面法线归属空间区域（地面分区 / 墙面区）
+        var device = hit.collider.GetComponentInParent<DeviceInfo>();
+        string area = ResolveArea(device, hit);
+        PlaceMarker(hit.point, device, area);
     }
 
-    void PlaceMarker(Vector3 position)
+    static string ResolveArea(DeviceInfo device, RaycastHit hit)
+    {
+        if (device != null && !string.IsNullOrEmpty(device.area))
+        {
+            return device.area;
+        }
+        return AreaResolver.FromHit(hit.point, hit.normal);
+    }
+
+    void PlaceMarker(Vector3 position, DeviceInfo device, string area)
     {
         // 单标记约束：先清掉上一个待提交标记
         ClearPendingMarker();
@@ -105,8 +118,19 @@ public class IssueMarkerPlacer : MonoBehaviour
         Destroy(pendingMarker.GetComponent<Collider>());
         pendingMarker.GetComponent<MeshRenderer>().sharedMaterial = markerMaterial;
 
-        ui?.SetPending(true, position);
+        pendingDevice = device;
+        pendingArea = area;
+        ui?.SetPending(true, position, device);
     }
+
+    DeviceInfo pendingDevice;
+    string pendingArea = string.Empty;
+
+    /// <summary>当前待提交标记命中的设备信息；命中普通场景表面时为 null。</summary>
+    public DeviceInfo PendingDevice => pendingDevice;
+
+    /// <summary>当前待提交标记归属的区域（设备绑定区域或空间区域）。</summary>
+    public string PendingArea => pendingArea;
 
     /// <summary>移除当前未提交的标记（取消按钮、切换点击都会调用）。</summary>
     public void ClearPendingMarker()
@@ -116,6 +140,8 @@ public class IssueMarkerPlacer : MonoBehaviour
             Destroy(pendingMarker);
             pendingMarker = null;
         }
+        pendingDevice = null;
+        pendingArea = string.Empty;
         ui?.SetPending(false, Vector3.zero);
     }
 }

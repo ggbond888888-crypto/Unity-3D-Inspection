@@ -28,6 +28,8 @@ public class IssueReporter : MonoBehaviour
         public string description;
         public string priority;
         public PositionPayload position;
+        public string deviceId;
+        public string area;
     }
 
     [Serializable]
@@ -37,19 +39,21 @@ public class IssueReporter : MonoBehaviour
     }
 
     /// <summary>提交问题；done(是否成功, 给用户看的提示, 后端返回的问题 JSON)。</summary>
-    public void Submit(string title, string description, string priority, Vector3 position, Action<bool, string, string> done)
+    public void Submit(string title, string description, string priority, Vector3 position, string deviceId, string area, Action<bool, string, string> done)
     {
-        StartCoroutine(PostIssue(title, description, priority, position, done));
+        StartCoroutine(PostIssue(title, description, priority, position, deviceId, area, done));
     }
 
-    IEnumerator PostIssue(string title, string description, string priority, Vector3 position, Action<bool, string, string> done)
+    IEnumerator PostIssue(string title, string description, string priority, Vector3 position, string deviceId, string area, Action<bool, string, string> done)
     {
         var payload = new IssuePayload
         {
             title = title,
             description = description,
             priority = priority,
-            position = new PositionPayload { x = position.x, y = position.y, z = position.z }
+            position = new PositionPayload { x = position.x, y = position.y, z = position.z },
+            deviceId = deviceId ?? string.Empty,
+            area = area ?? string.Empty
         };
         string json = JsonUtility.ToJson(payload);
         string url = backendUrl.TrimEnd('/') + "/issues";

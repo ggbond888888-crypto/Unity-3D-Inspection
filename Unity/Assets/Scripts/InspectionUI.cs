@@ -237,16 +237,53 @@ public class InspectionUI : MonoBehaviour
         Place(detailText.rectTransform, 24f, -64f, 410f, 280f);
         detailText.verticalOverflow = VerticalWrapMode.Overflow;
 
+        CreateButton(detailPanel.transform, "删除该问题", new Color(0.75f, 0.2f, 0.18f, 1f), -140f, 18f, 150f, 46f, DeleteCurrentDetail, true);
         CreateButton(detailPanel.transform, "关闭", new Color(0.35f, 0.35f, 0.38f, 1f), -24f, 18f, 110f, 46f, CloseDetail, true);
     }
+
+    string detailIssueId;
 
     void CloseDetail()
     {
         detailPanel.SetActive(false);
+        detailIssueId = null;
+    }
+
+    void DeleteCurrentDetail()
+    {
+        if (string.IsNullOrEmpty(detailIssueId))
+        {
+            return;
+        }
+        if (IssueMarkerManager.Instance == null)
+        {
+            ShowPopup("场景缺少 IssueMarkerManager 组件，无法删除");
+            return;
+        }
+        SetDetailButtonsInteractable(false);
+        IssueMarkerManager.Instance.DeleteIssue(detailIssueId, OnIssueDeleted);
+    }
+
+    void OnIssueDeleted(bool success, string id, string message)
+    {
+        SetDetailButtonsInteractable(true);
+        if (success)
+        {
+            CloseDetail();
+        }
+        ShowPopup(message);
+    }
+
+    void SetDetailButtonsInteractable(bool value)
+    {
+        foreach (var button in detailPanel.GetComponentsInChildren<Button>())
+        {
+            button.interactable = value;
+        }
     }
 
     /// <summary>点击历史标记时由 IssueMarkerManager 调用。</summary>
-    public void ShowIssueDetail(string title, string description, string priority, string status, Vector3 position)
+    public void ShowIssueDetail(string title, string description, string priority, string status, Vector3 position, string deviceId = "", string area = "", string id = "")
     {
         string priorityText = PriorityDisplayName(priority);
         string statusText = StatusDisplayName(status);
@@ -255,9 +292,15 @@ public class InspectionUI : MonoBehaviour
         body += $"描述：{(string.IsNullOrEmpty(description) ? "（无）" : description)}\n\n";
         body += $"优先级：{priorityText}（{priority}）\n";
         body += $"状态：{statusText}（{status}）\n";
+        if (!string.IsNullOrEmpty(deviceId) || !string.IsNullOrEmpty(area))
+        {
+            body += $"设备：{(string.IsNullOrEmpty(deviceId) ? "（无）" : deviceId)}\n";
+            body += $"区域：{(string.IsNullOrEmpty(area) ? "（无）" : area)}\n";
+        }
         body += $"坐标：({position.x:F2}, {position.y:F2}, {position.z:F2})";
 
         detailText.text = body;
+        detailIssueId = id;
         detailPanel.SetActive(true);
         detailPanel.transform.SetAsLastSibling();
     }
@@ -351,8 +394,13 @@ public class InspectionUI : MonoBehaviour
             ? IssueMarkerPlacer.Instance.PendingPosition
             : Vector3.zero;
 
+        // 区域在打点时已定（设备绑定区域优先，否则按命中点 / 墙面法线归属），提交时直接沿用
+        DeviceInfo device = IssueMarkerPlacer.Instance?.PendingDevice;
+        string deviceId = device != null ? device.deviceId : string.Empty;
+        string area = IssueMarkerPlacer.Instance?.PendingArea ?? string.Empty;
+
         SubmitButtonInteractable(false);
-        reporter.Submit(title, descInput.text.Trim(), priority, position, OnSubmitted);
+        reporter.Submit(title, descInput.text.Trim(), priority, position, deviceId, area, OnSubmitted);
     }
 
     void SubmitButtonInteractable(bool value)
@@ -396,8 +444,8 @@ public class InspectionUI : MonoBehaviour
     /// <summary>表单是否处于打开状态（打开时禁用场景打点）。</summary>
     public bool IsFormOpen => formPanel != null && formPanel.activeSelf;
 
-    /// <summary>有/无待提交标记时切换表单；新标记会重置表单内容。</summary>
-    public void SetPending(bool hasPending, Vector3 position)
+    /// <summary>有/无待提交标记时切换表单；新标记会重置表单内容。命中设备时附带设备信息。</summary>
+    public void SetPending(bool hasPending, Vector3 position, DeviceInfo device = null)
     {
         if (formPanel == null)
         {
@@ -409,7 +457,13 @@ public class InspectionUI : MonoBehaviour
 
         if (hasPending)
         {
-            pendingInfoText.text = $"标记坐标：({position.x:F2}, {position.y:F2}, {position.z:F2})";
+            string area = IssueMarkerPlacer.Instance != null ? IssueMarkerPlacer.Instance.PendingArea : AreaResolver.FromPoint(position);
+            string info = $"标记坐标：({position.x:F2}, {position.y:F2}, {position.z:F2}) ｜ 区域：{area}";
+            if (device != null && !string.IsNullOrEmpty(device.deviceId))
+            {
+                info += $" ｜ 设备：{device.deviceId}";
+            }
+            pendingInfoText.text = info;
             titleInput.text = string.Empty;
             descInput.text = string.Empty;
             SelectPriority(LOW);

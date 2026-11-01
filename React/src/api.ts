@@ -18,6 +18,8 @@ export interface Issue {
   priority: Priority
   status: Status
   position: Position
+  deviceId: string
+  area: string
   createdAt: string
   updatedAt: string
 }
@@ -41,7 +43,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new Error(message)
   }
 
-  return (await res.json()) as T
+  // 204 / 空响应体（如 DELETE）不解析 JSON
+  const text = await res.text()
+  return (text ? JSON.parse(text) : undefined) as T
 }
 
 export function getIssues(): Promise<Issue[]> {
@@ -54,4 +58,8 @@ export function updateStatus(id: string, status: Status): Promise<Issue> {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status }),
   })
+}
+
+export async function deleteIssue(id: string): Promise<void> {
+  await request<unknown>(`/issues/${encodeURIComponent(id)}`, { method: 'DELETE' })
 }

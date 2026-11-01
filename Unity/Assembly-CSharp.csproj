@@ -61,7 +61,9 @@
     <Analyzer Include="E:\Unity\Unity 6 LTS\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\AreaResolver.cs" />
     <Compile Include="Assets\Scripts\IssueReporter.cs" />
+    <Compile Include="Assets\Scripts\DeviceInfo.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\InspectionUI.cs" />
     <Compile Include="Assets\Scripts\IssueMarkerManager.cs" />

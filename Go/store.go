@@ -135,6 +135,27 @@ func (s *Store) UpdateStatus(id, status string) (Issue, error) {
 	return Issue{}, os.ErrNotExist
 }
 
+// Delete 按 ID 删除问题，并立即落盘；不存在时返回 os.ErrNotExist。
+func (s *Store) Delete(id string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	for i := range s.issues {
+		if s.issues[i].ID != id {
+			continue
+		}
+		removed := s.issues[i]
+		s.issues = append(s.issues[:i], s.issues[i+1:]...)
+		if err := s.saveLocked(); err != nil {
+			// 落盘失败时回滚内存状态，保证内存与文件一致。
+			s.issues = append(s.issues[:i], append([]Issue{removed}, s.issues[i:]...)...)
+			return err
+		}
+		return nil
+	}
+	return os.ErrNotExist
+}
+
 // newID 生成 32 位十六进制随机 ID。
 func newID() string {
 	b := make([]byte, 16)
