@@ -79,7 +79,7 @@ public class InspectionUI : MonoBehaviour
 
     void BuildHint(Transform parent)
     {
-        Text hint = CreateText(parent, "Hint", 20, TextAnchor.UpperLeft, new Color(1f, 1f, 1f, 0.9f));
+        Text hint = CreateText(parent, "Hint", 24, TextAnchor.UpperLeft, new Color(1f, 1f, 1f, 0.9f));
         hint.text = "WASD 移动 ｜ 右键拖拽转视角 ｜ 左键点击设备或场景表面放置标记";
         hint.raycastTarget = false;
 
@@ -110,31 +110,31 @@ public class InspectionUI : MonoBehaviour
         panelRt.anchorMax = new Vector2(0.5f, 0.5f);
         panelRt.pivot = new Vector2(0.5f, 0.5f);
         panelRt.anchoredPosition = Vector2.zero;
-        panelRt.sizeDelta = new Vector2(680f, 380f);
+        panelRt.sizeDelta = new Vector2(720f, 440f);
 
-        Text title = CreateText(formPanel.transform, "Title", 26, TextAnchor.MiddleLeft, Color.white);
-        Place(title.rectTransform, 28f, -20f, 400f, 36f);
+        Text title = CreateText(formPanel.transform, "Title", 30, TextAnchor.MiddleLeft, Color.white);
+        Place(title.rectTransform, 30f, -24f, 400f, 40f);
         title.text = "上报巡检问题";
 
-        pendingInfoText = CreateText(formPanel.transform, "Position", 18, TextAnchor.MiddleLeft, new Color(0.7f, 0.8f, 0.9f, 1f));
-        Place(pendingInfoText.rectTransform, 28f, -58f, 620f, 28f);
+        pendingInfoText = CreateText(formPanel.transform, "Position", 22, TextAnchor.MiddleLeft, new Color(0.7f, 0.8f, 0.9f, 1f));
+        Place(pendingInfoText.rectTransform, 30f, -64f, 620f, 30f);
 
-        CreateFieldLabel("标题（必填）", 28f, -96f);
-        titleInput = CreateInputField(formPanel.transform, "例如：机柜散热口温度过高", 180f, -96f, 460f, 42f);
+        CreateFieldLabel("标题（必填）", 30f, -106f);
+        titleInput = CreateInputField(formPanel.transform, "例如：机柜散热口温度过高", 190f, -106f, 470f, 46f);
 
-        CreateFieldLabel("描述（选填）", 28f, -150f);
-        descInput = CreateInputField(formPanel.transform, "补充说明（可留空）", 180f, -150f, 460f, 42f);
+        CreateFieldLabel("描述（选填）", 30f, -164f);
+        descInput = CreateInputField(formPanel.transform, "补充说明（可留空）", 190f, -164f, 470f, 46f);
 
-        CreateFieldLabel("优先级", 28f, -204f);
-        BuildPriorityDropdown(180f, -204f);
+        CreateFieldLabel("优先级", 30f, -222f);
+        BuildPriorityDropdown(190f, -222f);
 
-        CreateButton(formPanel.transform, "取消", new Color(0.35f, 0.35f, 0.38f, 1f), -28f, 24f, 110f, 46f, Cancel, true);
-        CreateButton(formPanel.transform, "上报", new Color(0.16f, 0.6f, 0.32f, 1f), -150f, 24f, 130f, 46f, Submit, true);
+        CreateButton(formPanel.transform, "取消", new Color(0.35f, 0.35f, 0.38f, 1f), -28f, 26f, 130f, 52f, Cancel, true);
+        CreateButton(formPanel.transform, "上报", new Color(0.16f, 0.6f, 0.32f, 1f), -170f, 26f, 150f, 52f, Submit, true);
     }
 
     void CreateFieldLabel(string text, float x, float y)
     {
-        Text label = CreateText(formPanel.transform, "Label_" + text, 20, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.88f, 1f));
+        Text label = CreateText(formPanel.transform, "Label_" + text, 24, TextAnchor.MiddleLeft, new Color(0.85f, 0.85f, 0.88f, 1f));
         Place(label.rectTransform, x, y, 150f, 40f);
         label.text = text;
     }
@@ -156,9 +156,9 @@ public class InspectionUI : MonoBehaviour
         rt.anchorMax = new Vector2(0f, 1f);
         rt.pivot = new Vector2(0f, 1f);
         rt.anchoredPosition = new Vector2(x, y);
-        rt.sizeDelta = new Vector2(130f, 34f);
+        rt.sizeDelta = new Vector2(150f, 38f);
 
-        priorityLabel = CreateText(buttonGO.transform, "Label", 18, TextAnchor.MiddleLeft, Color.white);
+        priorityLabel = CreateText(buttonGO.transform, "Label", 22, TextAnchor.MiddleLeft, Color.white);
         Stretch(priorityLabel.rectTransform, 14f, 0f, 14f, 0f);
         priorityLabel.text = "low  ▾";
         priorityLabel.raycastTarget = false;
@@ -174,12 +174,12 @@ public class InspectionUI : MonoBehaviour
         listRt.anchorMin = new Vector2(0f, 1f);
         listRt.anchorMax = new Vector2(0f, 1f);
         listRt.pivot = new Vector2(0f, 1f);
-        listRt.anchoredPosition = new Vector2(x, y - 38f);
-        listRt.sizeDelta = new Vector2(130f, 96f);
+        listRt.anchoredPosition = new Vector2(x, y - 42f);
+        listRt.sizeDelta = new Vector2(150f, 108f);
 
         BuildPriorityOption(priorityList.transform, LOW, 0f);
-        BuildPriorityOption(priorityList.transform, MEDIUM, 32f);
-        BuildPriorityOption(priorityList.transform, HIGH, 64f);
+        BuildPriorityOption(priorityList.transform, MEDIUM, 36f);
+        BuildPriorityOption(priorityList.transform, HIGH, 72f);
     }
 
     void BuildPriorityOption(Transform parent, string value, float yOffset)
@@ -199,9 +199,9 @@ public class InspectionUI : MonoBehaviour
         rt.anchorMax = new Vector2(0f, 1f);
         rt.pivot = new Vector2(0f, 1f);
         rt.anchoredPosition = new Vector2(0f, -yOffset);
-        rt.sizeDelta = new Vector2(130f, 32f);
+        rt.sizeDelta = new Vector2(150f, 36f);
 
-        Text label = CreateText(go.transform, "Label", 18, TextAnchor.MiddleLeft, Color.white);
+        Text label = CreateText(go.transform, "Label", 22, TextAnchor.MiddleLeft, Color.white);
         Stretch(label.rectTransform, 14f, 0f, 14f, 0f);
         label.text = value;
         label.raycastTarget = false;
@@ -224,7 +224,7 @@ public class InspectionUI : MonoBehaviour
         rt.anchoredPosition = new Vector2(0f, 140f);
         rt.sizeDelta = new Vector2(560f, 200f);
 
-        popupText = CreateText(popupPanel.transform, "Message", 24, TextAnchor.MiddleCenter, Color.white);
+        popupText = CreateText(popupPanel.transform, "Message", 28, TextAnchor.MiddleCenter, Color.white);
         Stretch(popupText.rectTransform, 28f, 76f, 28f, 20f);
 
         CreateButton(popupPanel.transform, "确定", new Color(0.2f, 0.45f, 0.8f, 1f), -190f, 24f, 120f, 44f, ClosePopup, false);
@@ -388,7 +388,7 @@ public class InspectionUI : MonoBehaviour
         rt.anchoredPosition = new Vector2(x, y);
         rt.sizeDelta = new Vector2(width, height);
 
-        Text text = CreateText(go.transform, "Label", 22, TextAnchor.MiddleCenter, Color.white);
+        Text text = CreateText(go.transform, "Label", 26, TextAnchor.MiddleCenter, Color.white);
         Stretch(text.rectTransform, 0f, 0f, 0f, 0f);
         text.text = label;
         return button;
@@ -406,11 +406,11 @@ public class InspectionUI : MonoBehaviour
         field.targetGraphic = bg;
         field.lineType = InputField.LineType.SingleLine;
 
-        Text text = CreateText(go.transform, "Text", 20, TextAnchor.MiddleLeft, new Color(0.08f, 0.08f, 0.1f, 1f));
+        Text text = CreateText(go.transform, "Text", 24, TextAnchor.MiddleLeft, new Color(0.08f, 0.08f, 0.1f, 1f));
         Stretch(text.rectTransform, 12f, 4f, 12f, 4f);
         text.supportRichText = false;
 
-        Text placeholderText = CreateText(go.transform, "Placeholder", 20, TextAnchor.MiddleLeft, new Color(0.45f, 0.45f, 0.48f, 1f));
+        Text placeholderText = CreateText(go.transform, "Placeholder", 24, TextAnchor.MiddleLeft, new Color(0.45f, 0.45f, 0.48f, 1f));
         Stretch(placeholderText.rectTransform, 12f, 4f, 12f, 4f);
         placeholderText.text = placeholder;
         placeholderText.fontStyle = FontStyle.Italic;
@@ -440,11 +440,12 @@ public class InspectionUI : MonoBehaviour
         rt.offsetMax = new Vector2(-right, -top);
     }
 
-    /// <summary>优先使用系统中文字体，避免内置 Arial 缺字显示方块。</summary>
+    /// <summary>优先使用系统中文字体，避免内置 Arial 缺字显示方块。
+    /// 动态字体用较大栅格尺寸创建，再缩放显示，避免小字号文字模糊。</summary>
     Font GetUIFont()
     {
         Font font = Font.CreateDynamicFontFromOSFont(
-            new[] { "Microsoft YaHei", "SimHei", "SimSun", "Arial" }, 22);
+            new[] { "Microsoft YaHei", "SimHei", "SimSun", "Arial" }, 128);
         if (font == null)
         {
             font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
