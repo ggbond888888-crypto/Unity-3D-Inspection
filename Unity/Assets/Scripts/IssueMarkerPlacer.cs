@@ -80,6 +80,14 @@ public class IssueMarkerPlacer : MonoBehaviour
             return;
         }
 
+        // 命中历史问题标记：弹出详情面板，不生成新的待提交标记
+        var view = hit.collider.GetComponent<IssueMarkerView>();
+        if (view != null && view.manager != null && view.issue != null)
+        {
+            view.manager.ShowDetail(view.issue);
+            return;
+        }
+
         PlaceMarker(hit.point);
     }
 

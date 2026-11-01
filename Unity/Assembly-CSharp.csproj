@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\IssueReporter.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\InspectionUI.cs" />
+    <Compile Include="Assets\Scripts\IssueMarkerManager.cs" />
     <Compile Include="Assets\Scripts\IssueMarkerPlacer.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
   </ItemGroup>

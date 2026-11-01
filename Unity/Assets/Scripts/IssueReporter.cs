@@ -36,13 +36,13 @@ public class IssueReporter : MonoBehaviour
         public string error;
     }
 
-    /// <summary>提交问题；done(是否成功, 给用户看的提示)。</summary>
-    public void Submit(string title, string description, string priority, Vector3 position, Action<bool, string> done)
+    /// <summary>提交问题；done(是否成功, 给用户看的提示, 后端返回的问题 JSON)。</summary>
+    public void Submit(string title, string description, string priority, Vector3 position, Action<bool, string, string> done)
     {
         StartCoroutine(PostIssue(title, description, priority, position, done));
     }
 
-    IEnumerator PostIssue(string title, string description, string priority, Vector3 position, Action<bool, string> done)
+    IEnumerator PostIssue(string title, string description, string priority, Vector3 position, Action<bool, string, string> done)
     {
         var payload = new IssuePayload
         {
@@ -66,11 +66,13 @@ public class IssueReporter : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                done?.Invoke(true, "上报成功，问题已保存到后端");
+                // 后端 201 返回完整问题对象，交给调用方即时生成场景标记
+                string responseBody = request.downloadHandler != null ? request.downloadHandler.text : null;
+                done?.Invoke(true, "上报成功，问题已保存到后端", responseBody);
                 yield break;
             }
 
-            done?.Invoke(false, BuildErrorMessage(request, url));
+            done?.Invoke(false, BuildErrorMessage(request, url), null);
         }
     }
 

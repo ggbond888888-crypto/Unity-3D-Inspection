@@ -25,6 +25,9 @@ public class InspectionUI : MonoBehaviour
     InputField titleInput;
     InputField descInput;
 
+    GameObject detailPanel;
+    Text detailText;
+
     string priority = LOW;
     IssueReporter reporter;
 
@@ -40,6 +43,7 @@ public class InspectionUI : MonoBehaviour
         formPanel.SetActive(false);
         popupPanel.SetActive(false);
         priorityList.SetActive(false);
+        detailPanel.SetActive(false);
     }
 
     void EnsureEventSystem()
@@ -72,6 +76,7 @@ public class InspectionUI : MonoBehaviour
 
         BuildHint(canvasGO.transform);
         BuildForm(canvasGO.transform);
+        BuildDetailPanel(canvasGO.transform);
         BuildPopup(canvasGO.transform);   // 最后创建，保证弹窗显示在最上层
     }
 
@@ -207,6 +212,78 @@ public class InspectionUI : MonoBehaviour
         label.raycastTarget = false;
     }
 
+    // ---------- 历史问题详情面板 ----------
+
+    void BuildDetailPanel(Transform parent)
+    {
+        detailPanel = new GameObject("DetailPanel");
+        detailPanel.transform.SetParent(parent, false);
+
+        var bg = detailPanel.AddComponent<Image>();
+        bg.color = new Color(0.1f, 0.11f, 0.13f, 0.96f);
+
+        RectTransform rt = detailPanel.GetComponent<RectTransform>();
+        rt.anchorMin = new Vector2(1f, 0.5f);
+        rt.anchorMax = new Vector2(1f, 0.5f);
+        rt.pivot = new Vector2(1f, 0.5f);
+        rt.anchoredPosition = new Vector2(-40f, 0f);
+        rt.sizeDelta = new Vector2(460f, 420f);
+
+        Text title = CreateText(detailPanel.transform, "Title", 28, TextAnchor.MiddleLeft, Color.white);
+        Place(title.rectTransform, 24f, -18f, 400f, 40f);
+        title.text = "问题详情";
+
+        detailText = CreateText(detailPanel.transform, "Content", 20, TextAnchor.UpperLeft, new Color(0.88f, 0.9f, 0.92f, 1f));
+        Place(detailText.rectTransform, 24f, -64f, 410f, 280f);
+        detailText.verticalOverflow = VerticalWrapMode.Overflow;
+
+        CreateButton(detailPanel.transform, "关闭", new Color(0.35f, 0.35f, 0.38f, 1f), -24f, 18f, 110f, 46f, CloseDetail, true);
+    }
+
+    void CloseDetail()
+    {
+        detailPanel.SetActive(false);
+    }
+
+    /// <summary>点击历史标记时由 IssueMarkerManager 调用。</summary>
+    public void ShowIssueDetail(string title, string description, string priority, string status, Vector3 position)
+    {
+        string priorityText = PriorityDisplayName(priority);
+        string statusText = StatusDisplayName(status);
+
+        string body = $"标题：{title}\n\n";
+        body += $"描述：{(string.IsNullOrEmpty(description) ? "（无）" : description)}\n\n";
+        body += $"优先级：{priorityText}（{priority}）\n";
+        body += $"状态：{statusText}（{status}）\n";
+        body += $"坐标：({position.x:F2}, {position.y:F2}, {position.z:F2})";
+
+        detailText.text = body;
+        detailPanel.SetActive(true);
+        detailPanel.transform.SetAsLastSibling();
+    }
+
+    static string PriorityDisplayName(string value)
+    {
+        switch (value)
+        {
+            case "high": return "高";
+            case "medium": return "中";
+            case "low": return "低";
+            default: return value;
+        }
+    }
+
+    static string StatusDisplayName(string value)
+    {
+        switch (value)
+        {
+            case "open": return "待处理";
+            case "in_progress": return "处理中";
+            case "resolved": return "已解决";
+            default: return value;
+        }
+    }
+
     // ---------- 结果弹窗 ----------
 
     void BuildPopup(Transform parent)
@@ -290,13 +367,14 @@ public class InspectionUI : MonoBehaviour
         }
     }
 
-    void OnSubmitted(bool success, string message)
+    void OnSubmitted(bool success, string message, string responseJson)
     {
         SubmitButtonInteractable(true);
         ShowPopup(message);
         if (success)
         {
-            // 上报成功：清空当前待提交标记（同时关闭表单）
+            // 用后端返回的问题数据立即生成历史标记，并清空待提交标记（同时关闭表单）
+            IssueMarkerManager.Instance?.SpawnMarkerFromJson(responseJson);
             IssueMarkerPlacer.Instance?.ClearPendingMarker();
         }
     }
